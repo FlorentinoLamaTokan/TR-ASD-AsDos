@@ -4,6 +4,9 @@
 #include <conio.h>
 #include <stdbool.h>
 
+char inusername[50], inpassword[50], username[50], password[50], key;
+char pilihUlang;
+
 enum SortType {
 	None = 0,
 	HiPrice,
@@ -418,24 +421,25 @@ void UrutanBarang() {
 
 }
 
-int main()
+void menuUtama()
 {
+
 	Node* list = NULL;
 	Pembeli pembeli;
 	pembeli.jumlahbarang = 0;
 	pembeli.totalharga = 0.0f;
 	int pilihan = 0;
-	while (pilihan!=7) {
+	while (pilihan != 7) {
 		pilihan = MenuUtama();
 		switch (pilihan) {
-		case 1 :
+		case 1:
 			list = TambahData();
 			break;
-		case 2 :
+		case 2:
 			printlist(list);
 			_getch();
 			break;
-		case 3 :
+		case 3:
 			Kalkulasi(list, &pembeli);
 			break;
 		case 4:
@@ -450,9 +454,254 @@ int main()
 		case 7:
 			return 0;
 		}
-		
+
 	}
-	
-	
+
+
 	return 0;
 }
+
+void loading()
+{ 
+	system("color 0a");
+	gotoxy(50, 15);
+	printf("Loading");
+	gotoxy(50, 16);
+	for (int i = 0; i < 30; i++) {
+
+		printf("%c", 220);
+		Sleep(100);
+
+	}
+
+	menuUtama();
+
+}
+
+
+
+//Rheyna Atalya S (672022168)
+void daftar()
+{
+	printf("MENU DAFTAR\n");
+	printf("masukkan username = ");
+	scanf(" %[^\n]s", &inusername);
+	printf("masukkan password = ");
+	scanf(" %[^\n]s", &inpassword);
+	strcpy(username, inusername);
+	strcpy(password, inpassword);
+	printf("\nANDA TELAH REGIS\n\n");
+	system("pause");
+	system("cls");
+	main();
+
+}
+
+//Rheyna Atalya S (672022168)
+void login()
+{
+
+	int i = 0;
+	system("cls");
+labelLogin:
+	if (inusername[0] == '\0' || inpassword[0] == '\0') {
+		printf("anda Belum Register\n");
+		return;
+	}
+	printf("masukkan username : ");
+	scanf(" %[^\n]s", &username);
+
+
+	printf("masukkan password : ");
+	while ((key = _getch()) != 13)
+	{
+		if (i < 0)
+			i = 0;
+		if (key == 8)
+		{
+			if (i == 0)
+				continue;
+			else
+			{
+				printf("\b \b");
+				i--;
+				continue;
+			}
+		}
+		if (i == 8)
+		{
+			continue;
+		}
+		printf("*");
+		password[i] = key;
+		i++;
+	}
+	password[i] = '\0';
+	if (strcmp(inusername, username) == 0 && strcmp(inpassword, password) == 0) {
+		printf("\nLOGIN SUKSES\n");
+		system("pause");
+		system("cls");
+		loading();
+	}
+	else if (strcmp(inusername, username) != 0 && strcmp(inpassword, password) != 0) {
+		printf("\nPASSWORD ATAU USERNAME ANDA SALAH\n");
+		system("pause");
+		system("cls");
+		login();
+	}
+	else {
+		printf("\npassword atau username anda salah\n");
+		system("pause");
+		system("cls");
+		login();
+	}
+
+	system("cls");
+	main();
+
+
+}
+
+void animasi()
+{
+	int x; double y;
+	int key;
+	char Pembuat[] = "\t\t\t   Pembuat :";
+	char NIM1[] = "\t\t\t   Angelina Sekar Ayu (672022240)";
+	char NIM2[] = "\t\t\t   Florentino Lama Tokan (672022245)";
+	char NIM3[] = "\t\t\t   Cheful Mandiri Djanning (672022256)";
+	char NIM4[] = "\t\t\t   Rheyna Atalya S (672022168)";
+	char NIM5[] = "\t\t\t   Gwen Theresia Grandis A (672022250)";
+
+	printf("\n\n\n");
+	for (x = 0; Pembuat[x] != NULL; x++)
+	{
+		printf(" %c", Pembuat[x]);
+		for (y = 0; y <= 9999999; y++)
+		{
+		}
+
+	}
+	printf("\n");
+	for (x = 0; NIM1[x] != NULL; x++)
+	{
+		printf(" %c", NIM1[x]);
+		for (y = 0; y <= 9999999; y++)
+		{
+		}
+
+	}
+	printf("\n");
+	for (x = 0; NIM2[x] != NULL; x++)
+	{
+		printf(" %c", NIM2[x]);
+		for (y = 0; y <= 9999999; y++)
+		{
+		}
+
+	}
+	printf("\n");
+	for (x = 0; NIM3[x] != NULL; x++)
+	{
+		printf(" %c", NIM3[x]);
+		for (y = 0; y <= 9999999; y++)
+		{
+		}
+
+	}
+	printf("\n");
+	for (x = 0; NIM4[x] != NULL; x++)
+	{
+		printf(" %c", NIM4[x]);
+		for (y = 0; y <= 9999999; y++)
+		{
+		}
+
+	}
+	printf("\n");
+	for (x = 0; NIM5[x] != NULL; x++)
+	{
+		printf(" %c", NIM5[x]);
+		for (y = 0; y <= 9999999; y++)
+		{
+		}
+
+	}
+	printf("\n");
+	_getch();
+
+
+}
+
+int main() {
+	system("cls");
+	system("color 0a");
+	gotoxy(2, 2);
+	printf("================");
+	gotoxy(2, 3);
+	printf("     WELCOME    ");
+	gotoxy(2, 4);
+	printf("================");
+	gotoxy(2, 10);
+	printf("================");
+	int posisi = 1;
+	int tekan = 0;
+
+	while (tekan != 13) {
+		gotoxy(2, 5);
+		panah(1, posisi); printf(" 1. Register");
+		gotoxy(2, 6);
+		panah(2, posisi); printf(" 2. Login");
+		gotoxy(2, 7);
+		panah(3, posisi); printf(" 3. EXIT");
+		tekan = _getch();
+		if (tekan == 80 && posisi != 3) {
+			posisi++;
+		}
+		else if (tekan == 72 && posisi != 1) {
+			posisi--;
+		}
+
+		if (posisi < 1) {
+			posisi = 3;
+		}
+		else if (posisi > 3) {
+			posisi = 1;
+		}
+		else {
+			posisi = posisi;
+		}
+	}int x = posisi;
+
+	switch (x) {
+	case 1:
+		system("cls");
+		system("COLOR F8");
+
+		daftar();
+
+		system("pause");
+		main();
+		break;
+
+	case 2:
+		system("cls");
+		system("COLOR F8");
+
+		login();
+
+		system("pause");
+		main();
+		break;
+
+	case 3:
+		system("cls");
+		system("COLOR F8");
+
+		animasi();
+
+		system("pause");
+		exit(0);
+	}
+}
+
