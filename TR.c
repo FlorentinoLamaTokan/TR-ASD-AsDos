@@ -3,6 +3,8 @@
 #include <Windows.h>
 #include <conio.h>
 #include <stdbool.h>
+#include<stdlib.h>
+
 
 char inusername[50], inpassword[50], username[50], password[50], key;
 char pilihUlang;
@@ -61,6 +63,34 @@ void panah(int pospanah, int posmenu)
 	}
 }
 
+int get_int(char* prompt)
+{
+	int num = 0, ch, count = 0;
+
+	printf("%s", prompt);
+	while (1)
+	{
+		ch = _getch();
+		if (ch == 13 && count)
+		{
+			break;
+		}
+		if (ch >= 48 && ch <= 57 && ch != 13)
+		{
+			num = num * 10 + (ch - 48);
+			printf("%c", ch);
+			count++;
+		}
+		else if ((ch == 8 && num) || (num == 0 && count))
+		{
+			num /= 10;
+			printf("\b \b");
+			count--;
+		}
+	}
+	return num;
+}
+
 int MenuUtama()
 {
 	system("cls");
@@ -71,7 +101,8 @@ int MenuUtama()
 	panah(posisi, 4); printf(" hapus Barang\n");
 	panah(posisi, 5); printf(" pilih urutan Barang\n");
 	panah(posisi, 6); printf(" Kalkulasi\n");
-	panah(posisi, 7); printf(" Exit\n");
+	panah(posisi, 7); printf(" cari barang\n");
+	panah(posisi, 8); printf(" Exit\n");
 	char tekan = _getch();
 	if (tekan ==(char) 80) {
 		system("cls");
@@ -85,11 +116,11 @@ int MenuUtama()
 		system("cls");
 		posisi = posisi;
 	}
-	if (posisi > 7)
+	if (posisi > 8)
 		posisi = 1;
 	else if (posisi < 1)
-		posisi = 7;
-	if (tekan == 13)
+		posisi = 8;
+	if (tekan ==(char)13)
 		return posisi;
 }
 
@@ -98,21 +129,20 @@ Node* head = NULL;
 int TotalNodes = 0;
 enum SortType sorttype = None;
 
-
+//Florentino Lama Tokan (672022245)
 Node* TambahData() {
 	char* inputnama=NULL;
 	int inputstok;
-	float inputharga;
+	int inputharga;
 	char pilihan;
 
 	label_menambahbarang:
 	inputnama = malloc(sizeof(char) * 32);
 	printf("nama : ");
 	scanf(" %[^\n]s", inputnama);
-	printf("stok : ");
-	scanf("%d", &inputstok);
-	printf("harga : ");
-	scanf("%f", &inputharga);
+	inputstok = get_int("stok : ");
+	inputharga = get_int("\nharga : ");
+	
 
 	Item data;
 	data.nama = inputnama;
@@ -136,7 +166,7 @@ Node* TambahData() {
 	}
 
 	tanyaUlang:
-	printf("mau menambahkan barang lagi?[y/n] : ");
+	printf("\nmau menambahkan barang lagi?[y/n] : ");
 	scanf(" %c", &pilihan);
 	if (pilihan == 'Y' || pilihan == 'y') {
 		system("cls");
@@ -155,24 +185,36 @@ Node* TambahData() {
 }
 
 
-
+//Cheful Mandiri Djanning (672022256)
 void Kalkulasi(Node* current, Pembeli* pembeli)
 {
 	char* inputnama = NULL;
 	int inputstok;
 	char pilihan;
+	int printCount = 0;
+
 
 	label_listbarang:
 	inputnama = malloc(sizeof(char) * 32);
-	printf("list barang\n");
+	
+
+	printf("List Barang : \n");
+	printf("======================================================================================\n");
+	printf("| No. |          Nama                           |     stok     |      Harga          |\n");
+	printf("======================================================================================\n");
 	
 	current = head;
 	while (current != NULL) {
-		printf("nama  : %s\n", current->data.nama);
-		printf("stok  : %d\n", current->data.stock);
-		printf("harga : %.3f\n", current->data.harga);
+		gotoxy(0, 4 + printCount); printf("|  %d.  ", printCount + 1);
+		gotoxy(6, 4 + printCount); printf(" | % s", current->data.nama);
+		gotoxy(48, 4 + printCount); printf("|       %d", current->data.stock);
+		gotoxy(63, 4 + printCount); printf("|       %.3f", current->data.harga);
+		gotoxy(85, 4 + printCount); printf("|\n");
 		current = current->next;
+		printCount++;
+		
 	}
+	printf("======================================================================================\n");
 
 	printf("masukkan nama barang : ");
 	scanf(" %[^\n]s", inputnama);
@@ -235,7 +277,7 @@ void Kalkulasi(Node* current, Pembeli* pembeli)
 
 
 
-
+//Gwen Theresia Grandis A (672022250)
 void printlist(Node* current)
 {
 	printf("Jenis Sort : %s\n", sortType_to_string(sorttype));
@@ -351,14 +393,23 @@ Label_ulang:
 	}
 }
 
+//Angelina Sekar Ayu (672022240)
 void printPembelian(Pembeli* pembeli)
 {
-	printf("list pembelian\n");
+	printf("List Barang : \n");
+	printf("======================================================================================\n");
+	printf("| No. |          Nama                           |     stok     |      Harga          |\n");
+	printf("======================================================================================");
 	for (int i = 0; i < pembeli->jumlahbarang; i++) {
-		printf("%s\n", pembeli->item[i].nama);
-		printf("%d\n", pembeli->item[i].stock);
-		printf("%.3f\n", pembeli->item[i].harga);
+
+		gotoxy(0, 4 + i); printf("|  %d.  ", i + 1);
+		gotoxy(6, 4 + i);  printf("|    %s", pembeli->item[i].nama);
+		gotoxy(48, 4 + i); printf("|       %d", pembeli->item[i].stock);
+		gotoxy(63, 4 + i); printf("|       %.3f", pembeli->item[i].harga);
+		gotoxy(85, 4 + i); printf("|\n");
+		
 	}
+	printf("======================================================================================\n");
 	printf("Total Harga : %.3f\n", pembeli->totalharga);
 	printf("Press Any Key To Go Back!\n");
 	_getch();
@@ -421,6 +472,44 @@ void UrutanBarang() {
 
 }
 
+void cariBarang(Node* current)
+{
+	bool ditemukan = false;
+	char* inputnama = NULL;
+	char Pilihulang;
+label_ulang:
+	inputnama = malloc(sizeof(char) * 32);
+	current = head;
+	printf("Cari nama barang\n");
+	printf("masukkan nama barang yang mau dicari : ");
+	scanf(" %[^\n]s", inputnama);
+	while (current != NULL) {
+		if (strcmp(current->data.nama, inputnama) == 0) {
+			printf("barang ditemukan\n");
+			printf("nama : %s\n", current->data.nama);
+			printf("nama : %d\n", current->data.stock);
+			printf("nama : %.3f\n", current->data.harga);
+			_getch();
+			ditemukan = true;
+			break;
+		}
+		current = current->next;
+	}
+	if (!ditemukan)
+		printf("Barang tidak ditemukan\n");
+	printf("mau cari barang lain?[y/n]\n");
+	scanf(" %c", &Pilihulang);
+	if (Pilihulang == 'Y' || Pilihulang =='y') {
+		system("cls");
+		goto label_ulang;
+	}
+	else if (Pilihulang == 'N' || Pilihulang =='n') {
+		system("cls");
+		return;
+	}
+	_getch();
+}
+
 void menuUtama()
 {
 
@@ -429,7 +518,7 @@ void menuUtama()
 	pembeli.jumlahbarang = 0;
 	pembeli.totalharga = 0.0f;
 	int pilihan = 0;
-	while (pilihan != 7) {
+	while (pilihan != 8) {
 		pilihan = MenuUtama();
 		switch (pilihan) {
 		case 1:
@@ -452,13 +541,13 @@ void menuUtama()
 			printPembelian(&pembeli);
 			break;
 		case 7:
+			cariBarang(list);
+			break;
+		case 8:
 			return 0;
 		}
-
 	}
 
-
-	return 0;
 }
 
 void loading()
@@ -467,10 +556,10 @@ void loading()
 	gotoxy(50, 15);
 	printf("Loading");
 	gotoxy(50, 16);
-	for (int i = 0; i < 30; i++) {
+	for (int i = 0; i < 50; i++) {
 
 		printf("%c", 220);
-		Sleep(100);
+		Sleep(25);
 
 	}
 
